@@ -111,4 +111,5 @@ resource "service" "frontend" {
   target = resource.container.k8s_proxy
   port   = "${variable.frontend_port}"
   path   = "/"
+  scheme = "http"
 }
