@@ -21,7 +21,7 @@ resource "kubernetes_cluster" "k8s" {
     }
   }
   port {
-    local = "${what.frontend_port}"
+    local = "8080"
   }
   port {
     local = "80"
@@ -69,6 +69,8 @@ resource "kubernetes_cluster" "k8s" {
   //   name = "public.ecr.aws/v6x4t1k2/shippingservice:298ecf5"
   // }
 }
+# file path
+# /root/.instruqt/modules/github.com_whboyd_ptslab-module-k8s-swagstore_modules_swagstore-k8s/
 
 // resource "kubernetes_config" "swagstore" {
 //   cluster = resource.kubernetes_cluster.k8s
