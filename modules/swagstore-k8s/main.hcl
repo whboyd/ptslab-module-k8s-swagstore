@@ -81,7 +81,7 @@ resource "kubernetes_cluster" "k8s" {
 // }
 
 resource "container" "k8s_proxy" {
-  //depends_on = ["resource.kubernetes_config.swagstore"]
+  depends_on = ["resource.kubernetes_config.swagstore"]
 
   image {
     name = "bitnami/kubectl:latest"
