@@ -21,7 +21,7 @@ resource "kubernetes_cluster" "k8s" {
     }
   }
   port {
-    local = "${variable.frontend_port}"
+    local = "8080"
   }
   port {
     local = "80"
@@ -72,7 +72,7 @@ resource "kubernetes_cluster" "k8s" {
 
 resource "kubernetes_config" "swagstore" {
   cluster = resource.kubernetes_cluster.k8s
-  paths = ["./k8s/${variable.lightweight_mode ? "nginx" : "swagstore"}/"]
+  paths = ["./k8s/nginx/"]
   wait_until_ready = false
   // health_check {
   //   timeout = "3000s"
@@ -87,7 +87,7 @@ resource "container" "k8s_proxy" {
     name = "bitnami/kubectl:latest"
   }
   
-  command = ["port-forward", "--address=0.0.0.0", "svc/frontend", "${variable.frontend_port}:80"]
+  command = ["port-forward", "--address=0.0.0.0", "svc/frontend", "8080:80"]
 
   network {
     id = resource.network.main.meta.id
@@ -100,7 +100,7 @@ resource "container" "k8s_proxy" {
   }
 
   port {
-    local = "${variable.frontend_port}"
+    local = "8080"
   }
   port {
     local = 80
@@ -109,7 +109,7 @@ resource "container" "k8s_proxy" {
 
 resource "service" "frontend" {
   target = resource.container.k8s_proxy
-  port   = "${variable.frontend_port}"
+  port   = "8080"
   path   = "/"
   scheme = "http"
 }
