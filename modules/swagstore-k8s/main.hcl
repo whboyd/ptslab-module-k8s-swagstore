@@ -74,7 +74,7 @@ resource "kubernetes_cluster" "k8s" {
 
 resource "kubernetes_config" "swagstore" {
   cluster = resource.kubernetes_cluster.k8s
-  paths = ["/root/.instruqt/modules/github.com_whboyd_ptslab-module-k8s-swagstore_modules_swagstore-k8s/k8s/nginx/"]
+  paths = ["./k8s/nginx/"]
   wait_until_ready = false
   // health_check {
   //   timeout = "3000s"
