@@ -21,58 +21,58 @@ resource "kubernetes_cluster" "k8s" {
     }
   }
   port {
-    local = "${variable.frontend_port}"
+    local = "${var.frontend_port}"
   }
   port {
     local = "80"
   }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/adservice:ddintrov2"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/cartservice:ddintrov2"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/checkoutservice:298ecf5"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/currencyservice:298ecf5"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/emailservice:298ecf5"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/frontend:noUtmPass"
-  }
   // copy_image {
-  //   name = "ubuntu:latest"
+  //   name = "public.ecr.aws/v6x4t1k2/adservice:ddintrov2"
   // }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/loadgenerator:298ecf5"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/paymentdbservice:298ecf5"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/paymentservice:ddintrov2"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/productcatalogservice:298ecf5"
-  }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/recommendationservice:298ecf5"
-  }
   // copy_image {
-  //   name = "redis:alpine"
+  //   name = "public.ecr.aws/v6x4t1k2/cartservice:ddintrov2"
   // }
-  copy_image {
-    name = "public.ecr.aws/v6x4t1k2/shippingservice:298ecf5"
-  }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/checkoutservice:298ecf5"
+  // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/currencyservice:298ecf5"
+  // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/emailservice:298ecf5"
+  // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/frontend:noUtmPass"
+  // }
+  // // copy_image {
+  // //   name = "ubuntu:latest"
+  // // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/loadgenerator:298ecf5"
+  // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/paymentdbservice:298ecf5"
+  // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/paymentservice:ddintrov2"
+  // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/productcatalogservice:298ecf5"
+  // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/recommendationservice:298ecf5"
+  // }
+  // // copy_image {
+  // //   name = "redis:alpine"
+  // // }
+  // copy_image {
+  //   name = "public.ecr.aws/v6x4t1k2/shippingservice:298ecf5"
+  // }
 }
 
 resource "kubernetes_config" "swagstore" {
   cluster = resource.kubernetes_cluster.k8s
-  paths = ["./k8s/swagstore/"]
+  paths = ["./k8s/${var.lightweight_mode ? "nginx" : "swagstore"}/"]
   wait_until_ready = false
   // health_check {
   //   timeout = "3000s"
@@ -87,7 +87,7 @@ resource "container" "k8s_proxy" {
     name = "bitnami/kubectl:latest"
   }
   
-  command = ["port-forward", "--address=0.0.0.0", "svc/frontend", "${variable.frontend_port}:80"]
+  command = ["port-forward", "--address=0.0.0.0", "svc/frontend", "${var.frontend_port}:80"]
 
   network {
     id = resource.network.main.meta.id
@@ -100,7 +100,7 @@ resource "container" "k8s_proxy" {
   }
 
   port {
-    local = "${variable.frontend_port}"
+    local = "${var.frontend_port}"
   }
   port {
     local = 80
@@ -109,7 +109,7 @@ resource "container" "k8s_proxy" {
 
 resource "service" "frontend" {
   target = resource.container.k8s_proxy
-  port   = "${variable.frontend_port}"
+  port   = "${var.frontend_port}"
   path   = "/"
   scheme = "http"
 }

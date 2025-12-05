@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: llmservice
+  labels:
+      tags.datadoghq.com/env: "dd-idemo"
+      tags.datadoghq.com/service: "llmservice"
+      tags.datadoghq.com/version: "0.0.11"
+      dd.team: "rnd"
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu:latest
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "echo \"Starting LLM service...\"; echo \"thinking...\"; echo \"pondering...\"; echo \"ruminating...\"; sleep 2; echo \"ERROR: Unable to load model\"" ]
