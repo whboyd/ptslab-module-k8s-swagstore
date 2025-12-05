@@ -70,15 +70,15 @@ resource "kubernetes_cluster" "k8s" {
   // }
 }
 
-// resource "kubernetes_config" "swagstore" {
-//   cluster = resource.kubernetes_cluster.k8s
-//   paths = ["./k8s/nginx/"]
-//   wait_until_ready = false
-//   // health_check {
-//   //   timeout = "3000s"
-//   //   pods = ["app=frontend"]
-//   // }
-// }
+resource "kubernetes_config" "swagstore" {
+  cluster = resource.kubernetes_cluster.k8s
+  paths = ["./k8s/nginx/"]
+  wait_until_ready = false
+  // health_check {
+  //   timeout = "3000s"
+  //   pods = ["app=frontend"]
+  // }
+}
 
 resource "container" "k8s_proxy" {
   //depends_on = ["resource.kubernetes_config.swagstore"]
