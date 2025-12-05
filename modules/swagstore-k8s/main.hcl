@@ -21,10 +21,10 @@ resource "kubernetes_cluster" "k8s" {
     }
   }
   port {
-    local = "8080"
+    local = 8080
   }
   port {
-    local = "80"
+    local = 80
   }
   // copy_image {
   //   name = "public.ecr.aws/v6x4t1k2/adservice:ddintrov2"
@@ -75,11 +75,11 @@ resource "kubernetes_cluster" "k8s" {
 resource "kubernetes_config" "swagstore" {
   cluster = resource.kubernetes_cluster.k8s
   paths = ["./k8s/nginx/"]
-  wait_until_ready = false
-  // health_check {
-  //   timeout = "3000s"
-  //   pods = ["app=frontend"]
-  // }
+  wait_until_ready = true
+  health_check {
+    timeout = "3000s"
+    pods = ["app=frontend"]
+  }
 }
 
 resource "container" "k8s_proxy" {
@@ -102,7 +102,7 @@ resource "container" "k8s_proxy" {
   }
 
   port {
-    local = "8080"
+    local = 8080
   }
   port {
     local = 80
@@ -111,7 +111,7 @@ resource "container" "k8s_proxy" {
 
 resource "service" "frontend" {
   target = resource.container.k8s_proxy
-  port   = "8080"
+  port   = 8080
   path   = "/"
   scheme = "http"
 }
