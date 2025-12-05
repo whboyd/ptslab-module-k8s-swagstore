@@ -21,7 +21,7 @@ resource "kubernetes_cluster" "k8s" {
     }
   }
   port {
-    local = "${var.frontend_port}"
+    local = "${what.frontend_port}"
   }
   port {
     local = "80"
