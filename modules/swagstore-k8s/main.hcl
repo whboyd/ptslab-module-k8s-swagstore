@@ -69,18 +69,18 @@ resource "kubernetes_cluster" "k8s" {
   //   name = "public.ecr.aws/v6x4t1k2/shippingservice:298ecf5"
   // }
 }
-# file path
+# file path used by instruqt to store module files:
 # /root/.instruqt/modules/github.com_whboyd_ptslab-module-k8s-swagstore_modules_swagstore-k8s/
 
-// resource "kubernetes_config" "swagstore" {
-//   cluster = resource.kubernetes_cluster.k8s
-//   paths = ["./k8s/nginx/"]
-//   wait_until_ready = false
-//   // health_check {
-//   //   timeout = "3000s"
-//   //   pods = ["app=frontend"]
-//   // }
-// }
+resource "kubernetes_config" "swagstore" {
+  cluster = resource.kubernetes_cluster.k8s
+  paths = ["/root/.instruqt/modules/github.com_whboyd_ptslab-module-k8s-swagstore_modules_swagstore-k8s/k8s/nginx/"]
+  wait_until_ready = false
+  // health_check {
+  //   timeout = "3000s"
+  //   pods = ["app=frontend"]
+  // }
+}
 
 resource "container" "k8s_proxy" {
   depends_on = ["resource.kubernetes_config.swagstore"]
