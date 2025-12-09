@@ -75,11 +75,11 @@ resource "kubernetes_cluster" "k8s" {
 resource "kubernetes_config" "swagstore" {
   cluster = resource.kubernetes_cluster.k8s
   paths = ["./k8s/swagstore/"]
-  wait_until_ready = true
-  health_check {
+  wait_until_ready = false
+  /*health_check {
     timeout = "3000s"
     pods = ["app=frontend"]
-  }
+  }*/
 }
 
 resource "container" "k8s_proxy" {
@@ -88,6 +88,8 @@ resource "container" "k8s_proxy" {
   image {
     name = "bitnami/kubectl:latest"
   }
+
+  max_restart_count = 100
   
   command = ["port-forward", "--address=0.0.0.0", "svc/frontend", "8080:80"]
 
