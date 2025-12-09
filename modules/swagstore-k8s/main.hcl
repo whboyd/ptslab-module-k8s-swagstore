@@ -76,10 +76,10 @@ resource "kubernetes_config" "swagstore" {
   cluster = resource.kubernetes_cluster.k8s
   paths = ["./k8s/swagstore/"]
   wait_until_ready = false
-  /*health_check {
-    timeout = "3000s"
+  health_check {
+    timeout = "30000s"
     pods = ["app=frontend"]
-  }*/
+  }
 }
 
 resource "container" "k8s_proxy" {
