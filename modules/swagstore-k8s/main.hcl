@@ -6,6 +6,12 @@ resource "network" "main" {
   subnet = "10.0.0.0/24"
 }
 
+resource "image_cache" "main" {
+  network {
+    id = resource.network.main.meta.id
+  }
+}
+
 resource "kubernetes_cluster" "k8s" {
   network {
     id = resource.network.main.meta.id
