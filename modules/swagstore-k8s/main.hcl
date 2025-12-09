@@ -26,55 +26,55 @@ resource "kubernetes_cluster" "k8s" {
   port {
     local = 80
   }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/adservice:ddintrov2"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/cartservice:ddintrov2"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/checkoutservice:298ecf5"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/currencyservice:298ecf5"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/emailservice:298ecf5"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/frontend:noUtmPass"
+  }
   // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/adservice:ddintrov2"
+  //   name = "ubuntu:latest"
   // }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/loadgenerator:298ecf5"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/paymentdbservice:298ecf5"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/paymentservice:ddintrov2"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/productcatalogservice:298ecf5"
+  }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/recommendationservice:298ecf5"
+  }
   // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/cartservice:ddintrov2"
+  //   name = "redis:alpine"
   // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/checkoutservice:298ecf5"
-  // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/currencyservice:298ecf5"
-  // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/emailservice:298ecf5"
-  // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/frontend:noUtmPass"
-  // }
-  // // copy_image {
-  // //   name = "ubuntu:latest"
-  // // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/loadgenerator:298ecf5"
-  // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/paymentdbservice:298ecf5"
-  // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/paymentservice:ddintrov2"
-  // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/productcatalogservice:298ecf5"
-  // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/recommendationservice:298ecf5"
-  // }
-  // // copy_image {
-  // //   name = "redis:alpine"
-  // // }
-  // copy_image {
-  //   name = "public.ecr.aws/v6x4t1k2/shippingservice:298ecf5"
-  // }
+  copy_image {
+    name = "public.ecr.aws/v6x4t1k2/shippingservice:298ecf5"
+  }
 }
 # file path used by instruqt to store module files:
 # /root/.instruqt/modules/github.com_whboyd_ptslab-module-k8s-swagstore_modules_swagstore-k8s/
 
 resource "kubernetes_config" "swagstore" {
   cluster = resource.kubernetes_cluster.k8s
-  paths = ["./k8s/nginx/"]
+  paths = ["./k8s/swagstore/"]
   wait_until_ready = true
   health_check {
     timeout = "3000s"
