@@ -17,7 +17,7 @@ resource "kubernetes_cluster" "k8s" {
   config {
     docker {
       insecure_registries = ["public.ecr.aws/v6x4t1k2", "public.ecr.aws", "gcr.io", "gcr.io/datadoghq"]
-      no_proxy            = ["public.ecr.aws", "gcr.io"]
+      // no_proxy            = ["public.ecr.aws", "gcr.io"]
     }
   }
   port {
